@@ -1,0 +1,32 @@
+{
+  "name": "@cc-heart/unplugin-load-config",
+  "version": "0.0.1",
+  "main": "dist/index.cjs",
+  "scripts": {
+    "test": "vitest",
+    "dev": "ts-node-esm ./src/index.ts",
+    "build": "rollup -c",
+    "build:type": "tsc -p tsconfig.build.json"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "author": "cc heart",
+  "description": "load configuration files from different operating environments",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "tslib": "^2.6.2",
+    "vitest": "^0.34.3"
+  },
+  "dependencies": {
+    "@cc-heart/utils-service": "^2.0.0",
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-typescript": "^11.1.4",
+    "rollup": "^3.29.3"
+  }
+}
