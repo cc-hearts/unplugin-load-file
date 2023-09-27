@@ -4,11 +4,12 @@
   "main": "dist/index.cjs",
   "type": "module",
   "scripts": {
-    "test": "vitest",
     "dev": "ts-node-esm ./src/index.ts",
     "build": "rollup -c",
     "build:type": "tsc -p tsconfig.build.json",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "coverage": "vitest run --coverage",
+    "test": "vitest"
   },
   "exports": {
     ".": {
@@ -22,6 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.5.9",
+    "@vitest/coverage-v8": "^0.34.5",
     "prettier": "^3.0.3",
     "tslib": "^2.6.2",
     "vitest": "^0.34.3"

@@ -1,10 +1,10 @@
 import { resolve } from 'path'
 import { isESM, isTS } from './validate'
 import commonjs from '@rollup/plugin-commonjs'
-import { existsSync } from 'fs'
 import * as Rollup from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import { rm, writeFile } from 'fs/promises'
+import { getResolvePath } from './shard.js'
 
 async function loadRollupPlugins(path: string) {
   const plugins = []
@@ -85,16 +85,4 @@ export async function compileLoadConfig(loadFileList: string[]) {
     rmPathList.forEach((path) => rm(path))
   }
   return null
-}
-
-function getResolvePath(loadFileList: string[]): string | undefined {
-  let resolvePath: string | undefined
-  for (const fileName of loadFileList) {
-    const configPath = resolve(process.cwd(), fileName)
-    if (existsSync(configPath)) {
-      resolvePath = configPath
-      break
-    }
-  }
-  return resolvePath
 }

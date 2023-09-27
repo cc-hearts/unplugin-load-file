@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { getFileExtension } from './shard.js'
 import { getPackage } from '@cc-heart/utils-service'
+import { existsSync } from 'node:fs'
 
 export function isCommonJsExtension(path: string) {
   return ['cts', 'cjs'].includes(getFileExtension(path))
@@ -8,6 +9,9 @@ export function isCommonJsExtension(path: string) {
 
 export async function isESM(path?: string) {
   if (path) {
+    if (!existsSync(path)) {
+      throw new Error('File not found')
+    }
     if (isCommonJsExtension(path)) return false
     const file = await readFile(path, 'utf8')
     return !file.includes('module.exports')
