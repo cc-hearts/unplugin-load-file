@@ -2,11 +2,13 @@
   "name": "@cc-heart/unplugin-load-config",
   "version": "0.0.1",
   "main": "dist/index.cjs",
+  "type": "module",
   "scripts": {
     "test": "vitest",
     "dev": "ts-node-esm ./src/index.ts",
     "build": "rollup -c",
-    "build:type": "tsc -p tsconfig.build.json"
+    "build:type": "tsc -p tsconfig.build.json",
+    "format": "prettier --write ."
   },
   "exports": {
     ".": {
@@ -20,6 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.5.9",
+    "prettier": "^3.0.3",
     "tslib": "^2.6.2",
     "vitest": "^0.34.3"
   },

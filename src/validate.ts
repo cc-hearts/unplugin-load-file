@@ -1,5 +1,5 @@
-import { readFile } from "node:fs/promises"
-import { getFileExtension } from "./shard.js"
+import { readFile } from 'node:fs/promises'
+import { getFileExtension } from './shard.js'
 import { getPackage } from '@cc-heart/utils-service'
 
 export function isCommonJsExtension(path: string) {

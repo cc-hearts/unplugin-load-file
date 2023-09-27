@@ -1,1 +1,1 @@
-export declare function getFileExtension(path: string): string;
+export declare function getFileExtension(path: string): string

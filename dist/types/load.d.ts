@@ -1,1 +1,4 @@
-export declare function parseLoadFile(fileName: string, suffixList?: string[]): string[];
+export declare function parseLoadFile(
+  fileName: string,
+  suffixList?: string[],
+): string[]
