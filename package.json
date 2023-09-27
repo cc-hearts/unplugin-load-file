@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "dist/index.cjs",
   "type": "module",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "dev": "ts-node-esm ./src/index.ts",
     "build": "rollup -c",

@@ -1,1 +1,1 @@
-export declare function compileLoadConfig(loadFileList: string[]): Promise<any>
+export declare function compileLoadConfig(loadFileList: string[]): Promise<any>;

@@ -1,8 +1,6 @@
 interface LoadConfig {
-  filetPath: string
-  suffixList?: string[]
+    rootPath: string;
+    suffixList?: string[];
 }
-export declare function loadConfig<T = any>(
-  config: LoadConfig,
-): Promise<T | null>
-export {}
+export declare function loadConfig<T = any>(config: LoadConfig): Promise<T | null>;
+export {};
