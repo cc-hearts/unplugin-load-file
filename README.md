@@ -18,8 +18,9 @@ Here's an example of how to use loadFile:
 import { loadConfig } from '@cc-heart/unplugin-load-file'
 
 const config = await loadConfig({
-  filetPath: 'config',
+  filename: 'config',
   suffixList: ['ts', 'mts', 'mjs', 'js'],
+  dirPath: process.cwd()
 })
 ```
 
