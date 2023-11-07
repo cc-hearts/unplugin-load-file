@@ -1,1 +1,2 @@
-export declare function parseLoadFile(fileName: string, suffixList?: string[]): string[];
+import type { DEFAULT_SUFFIX } from './constant.js';
+export declare function parseLoadFile(filePath: string, suffixList: string[] | typeof DEFAULT_SUFFIX): string[];

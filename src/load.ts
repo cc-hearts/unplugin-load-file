@@ -1,13 +1,14 @@
-const DEFAULT_SUFFIX = ['js', 'ts', 'mjs', 'cjs', 'mts', 'cts']
+import type { DEFAULT_SUFFIX } from './constant.js'
+
 export function parseLoadFile(
-  fileName: string,
-  suffixList: string[] = DEFAULT_SUFFIX,
+  filePath: string,
+  suffixList: string[] | typeof DEFAULT_SUFFIX,
 ) {
-  if (!fileName) {
-    throw new Error('fileName is not empty')
+  if (!filePath) {
+    throw new Error('filePath is not empty')
   }
   if (!Array.isArray(suffixList)) {
     throw new Error('suffix must be array')
   }
-  return suffixList.map((suffix) => `${fileName}.${suffix}`)
+  return suffixList.map((suffix) => `${filePath}.${suffix}`)
 }

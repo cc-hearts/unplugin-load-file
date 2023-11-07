@@ -1,41 +1,21 @@
 'use strict';
 
 var path = require('path');
-var promises$1 = require('node:fs/promises');
+var commonjs = require('@rollup/plugin-commonjs');
+var typescript = require('@rollup/plugin-typescript');
+var promises = require('fs/promises');
+var rollup = require('rollup');
 var node_fs = require('node:fs');
 require('fs');
-var promises = require('fs/promises');
 require('url');
-var commonjs = require('@rollup/plugin-commonjs');
-var Rollup = require('rollup');
-var typescript = require('@rollup/plugin-typescript');
-
-function _interopNamespaceDefault(e) {
-    var n = Object.create(null);
-    if (e) {
-        Object.keys(e).forEach(function (k) {
-            if (k !== 'default') {
-                var d = Object.getOwnPropertyDescriptor(e, k);
-                Object.defineProperty(n, k, d.get ? d : {
-                    enumerable: true,
-                    get: function () { return e[k]; }
-                });
-            }
-        });
-    }
-    n.default = e;
-    return Object.freeze(n);
-}
-
-var Rollup__namespace = /*#__PURE__*/_interopNamespaceDefault(Rollup);
+var promises$1 = require('node:fs/promises');
 
 function getFileExtension(path) {
     return path.split('.').slice(-1)[0];
 }
 function getResolvePath(loadFileList) {
     let resolvePath;
-    for (const fileName of loadFileList) {
-        const configPath = path.resolve(process.cwd(), fileName);
+    for (const configPath of loadFileList) {
         if (node_fs.existsSync(configPath)) {
             resolvePath = configPath;
             break;
@@ -48,7 +28,7 @@ function getResolvePath(loadFileList) {
  * Retrieves the contents of a package.json file.
  *
  * @param {string=} path - The path to the package.json file. If not provided, the current working directory will be used.
- * @return {Promise<object>} A promise that resolves to the parsed contents of the package.json file.
+ * @return {Promise<T = any>} A promise that resolves to the parsed contents of the package.json file.
  */
 async function getPackage(path$1) {
     path$1 = path$1 || path.resolve(process.cwd(), 'package.json');
@@ -84,11 +64,10 @@ async function loadRollupPlugins(path) {
 }
 async function transformTsToJs(filePath, inputOptions, outputOptions) {
     if (isTS(filePath)) {
-        inputOptions.plugins || (inputOptions.plugins = []);
         if (Array.isArray(inputOptions.plugins)) {
             inputOptions.plugins = [...inputOptions.plugins, typescript()];
         }
-        const bundle = await Rollup__namespace.rollup(inputOptions);
+        const bundle = await rollup.rollup(inputOptions);
         const { output } = await bundle.generate(outputOptions);
         const { code } = output[0];
         const tsToJsPath = path.resolve(process.cwd(), './__config.__tsTransformJs.mjs');
@@ -98,13 +77,13 @@ async function transformTsToJs(filePath, inputOptions, outputOptions) {
     return filePath;
 }
 async function build(inputOptions, outputOptions) {
-    const bundle = await Rollup__namespace.rollup(inputOptions);
+    const bundle = await rollup.rollup(inputOptions);
     await bundle.write(outputOptions);
 }
 async function compileLoadConfig(loadFileList) {
     const resolvePath = getResolvePath(loadFileList);
     if (!resolvePath) {
-        console.log('No configuration file found');
+        console.log('No found configuration file ');
         return null;
     }
     const plugins = await loadRollupPlugins(resolvePath);
@@ -137,19 +116,24 @@ async function compileLoadConfig(loadFileList) {
 }
 
 const DEFAULT_SUFFIX = ['js', 'ts', 'mjs', 'cjs', 'mts', 'cts'];
-function parseLoadFile(fileName, suffixList = DEFAULT_SUFFIX) {
-    if (!fileName) {
-        throw new Error('fileName is not empty');
+
+function parseLoadFile(filePath, suffixList) {
+    if (!filePath) {
+        throw new Error('filePath is not empty');
     }
     if (!Array.isArray(suffixList)) {
         throw new Error('suffix must be array');
     }
-    return suffixList.map((suffix) => `${fileName}.${suffix}`);
+    return suffixList.map((suffix) => `${filePath}.${suffix}`);
 }
 
 async function loadConfig(config) {
-    const { rootPath, suffixList } = config;
-    const loadFileList = parseLoadFile(rootPath, suffixList);
+    const { filename, suffixList = DEFAULT_SUFFIX, dirPath = process.cwd(), } = config;
+    if (!filename) {
+        throw new Error('filename is not empty');
+    }
+    const filePath = path.resolve(dirPath, filename);
+    const loadFileList = parseLoadFile(filePath, suffixList);
     return await compileLoadConfig(loadFileList);
 }
 

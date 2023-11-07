@@ -11,7 +11,7 @@ describe('parseLoadFileList', () => {
 
   it('should throw an error when rootPath is empty', () => {
     expect(() => parseLoadFile('', ['js', 'ts'])).toThrowError(
-      'fileName is not empty',
+      'filePath is not empty',
     )
   })
 

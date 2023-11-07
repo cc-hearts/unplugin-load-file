@@ -1,12 +1,12 @@
-import { resolve } from 'path'
-import { isESM, isTS } from './validate'
 import commonjs from '@rollup/plugin-commonjs'
-import * as Rollup from 'rollup'
 import typescript from '@rollup/plugin-typescript'
 import { rm, writeFile } from 'fs/promises'
+import { resolve } from 'path'
+import { type RollupOptions, type OutputOptions, rollup } from 'rollup'
 import { getResolvePath } from './shard.js'
+import { isESM, isTS } from './validate'
 
-async function loadRollupPlugins(path: string) {
+export async function loadRollupPlugins(path: string) {
   const plugins = []
   if (!(await isESM(path))) {
     plugins.push(commonjs())
@@ -14,17 +14,18 @@ async function loadRollupPlugins(path: string) {
 
   return plugins
 }
-async function transformTsToJs(
+
+export async function transformTsToJs(
   filePath: string,
-  inputOptions: Rollup.RollupOptions,
-  outputOptions: Rollup.OutputOptions,
+  inputOptions: RollupOptions,
+  outputOptions: OutputOptions,
 ) {
   if (isTS(filePath)) {
-    inputOptions.plugins || (inputOptions.plugins = [])
     if (Array.isArray(inputOptions.plugins)) {
       inputOptions.plugins = [...inputOptions.plugins, typescript()]
     }
-    const bundle = await Rollup.rollup(inputOptions)
+
+    const bundle = await rollup(inputOptions)
     const { output } = await bundle.generate(outputOptions)
     const { code } = output[0]
 
@@ -36,10 +37,10 @@ async function transformTsToJs(
 }
 
 async function build(
-  inputOptions: Rollup.RollupOptions,
-  outputOptions: Rollup.OutputOptions,
+  inputOptions: RollupOptions,
+  outputOptions: OutputOptions,
 ) {
-  const bundle = await Rollup.rollup(inputOptions)
+  const bundle = await rollup(inputOptions)
   await bundle.write(outputOptions)
 }
 
@@ -47,7 +48,7 @@ export async function compileLoadConfig(loadFileList: string[]) {
   const resolvePath = getResolvePath(loadFileList)
 
   if (!resolvePath) {
-    console.log('No configuration file found')
+    console.log('No found configuration file ')
     return null
   }
 
