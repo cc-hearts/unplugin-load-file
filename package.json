@@ -1,5 +1,5 @@
 {
-  "name": "@cc-heart/unplugin-load-config",
+  "name": "@cc-heart/unplugin-load-file",
   "version": "0.0.2",
   "main": "dist/index.cjs",
   "type": "module",
