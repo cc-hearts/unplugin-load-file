@@ -1,5 +1,7 @@
 import typescript from '@rollup/plugin-typescript'
-
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import json from '@rollup/plugin-json'
 export default {
   input: './src/index.ts',
   output: [
@@ -12,6 +14,6 @@ export default {
       format: 'cjs',
     },
   ],
-  external: ['rollup', '@rollup/plugin-commonjs', '@rollup/typescript'],
-  plugins: [typescript()],
+  external: ['rollup', '@rollup/plugin-commonjs', '@rollup/plugin-typescript'],
+  plugins: [json(),resolve(),commonjs(),typescript()],
 }
