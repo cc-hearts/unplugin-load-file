@@ -1,6 +1,6 @@
 {
   "name": "@cc-heart/unplugin-load-file",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.cjs",
   "type": "module",
   "types": "dist/types/index.d.ts",
